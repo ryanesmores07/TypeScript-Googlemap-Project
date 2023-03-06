@@ -22786,12 +22786,16 @@ exports.User = void 0;
 var faker_1 = require("@faker-js/faker");
 var User = /** @class */function () {
   function User() {
+    this.color = "red";
     this.name = faker_1.faker.name.firstName();
     this.location = {
       lat: Number(faker_1.faker.address.latitude()),
       lng: Number(faker_1.faker.address.longitude())
     };
   }
+  User.prototype.markerContent = function () {
+    return "Username: ".concat(this.name);
+  };
   return User;
 }();
 exports.User = User;
@@ -22805,6 +22809,7 @@ exports.Company = void 0;
 var faker_1 = require("@faker-js/faker");
 var Company = /** @class */function () {
   function Company() {
+    this.color = "blue";
     this.name = faker_1.faker.company.name();
     this.catchPhrase = faker_1.faker.company.catchPhrase();
     this.location = {
@@ -22812,10 +22817,12 @@ var Company = /** @class */function () {
       lng: Number(faker_1.faker.address.longitude())
     };
   }
+  Company.prototype.markerContent = function () {
+    return "\n    <div>\n      <h1>Company name: ".concat(this.name, "</h1> \n      <h3>Catchphrase: ").concat(this.catchPhrase, "</h3>\n    </div>\n            ");
+  };
   return Company;
 }();
 exports.Company = Company;
-google;
 },{"@faker-js/faker":"../../../../node_modules/@faker-js/faker/dist/esm/index.mjs"}],"src/CustomMap.ts":[function(require,module,exports) {
 "use strict";
 
@@ -22834,12 +22841,21 @@ var CustomMap = /** @class */function () {
     });
   }
   CustomMap.prototype.addMarker = function (mappable) {
-    new google.maps.Marker({
+    var _this = this;
+    var marker = new google.maps.Marker({
       position: {
         lat: mappable.location.lat,
         lng: mappable.location.lng
       },
       map: this.googleMap
+    });
+    marker.addListener("click", function () {
+      var contentString = mappable.markerContent();
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString,
+        ariaLabel: "Uluru"
+      });
+      infowindow.open(_this.googleMap, marker);
     });
   };
   return CustomMap;
@@ -22885,7 +22901,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58610" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49783" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
